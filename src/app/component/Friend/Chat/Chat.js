@@ -33,42 +33,40 @@ function Chat() {
     }
 
 
-   useEffect(()=>{
-
-    const readMessage=async (friendAddress)=>{
-       console.log('address',friendAddress)
-        try{
-            const read=await contract.readMessage(friendAddress);
-            console.log('msg',read);
-          
+    useEffect(() => {
+        const readMessage = async (friendAddress) => {
+          console.log('address', friendAddress);
+          try {
+            const read = await contract.readMessage(friendAddress);
+            console.log('msg', read);
+      
             const messages = read.map((message) => ({
-                sender: message.sender,
-                timestamp: message.timestamp._hex,
-                msg: message.msg,
-              }));
-               console.log('messages:', messages);
-              dispatch(setFriendMsg(messages))
-            
-        }catch(err){
+              sender: message.sender,
+              timestamp: message.timestamp._hex,
+              msg: message.msg,
+            }));
+            console.log('messages:', messages);
+            dispatch(setFriendMsg(messages));
+          } catch (err) {
             console.log(err);
-            
+          }
+        };
+      
+        if (currentUserAddress && contract) {
+          readMessage(currentUserAddress);
         }
-    };
-
-   readMessage(currentUserAddress);
-
-   },[currentUserAddress])
-
-
-    useEffect(()=>{
+      }, [currentUserAddress, contract, dispatch]);
+      
+      useEffect(() => {
         const name = searchParams.get('name');
-       const address = searchParams.get('address');
-  
-       setChatData({name,address});
-       dispatch(setChatData({name,address}));
-
-       account &&  getUserName();
-    },[searchParams]);
+        const address = searchParams.get('address');
+      
+        // setChatData({ name, address });
+        dispatch(setChatData({ name, address }));
+      
+        account && getUserName();
+      }, [searchParams, account, dispatch]);
+      
 
     // useEffect(()=>{
     //    currentUserAddress && readMessage(currentUserAddress);
