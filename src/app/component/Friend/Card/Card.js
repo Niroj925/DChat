@@ -1,17 +1,18 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import styles from './Card.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import Avatar from '../../Avatar';
 
 function Card({el,i}) {
-//   console.log(el);
+
   const readMessage=(pubkey)=>{
     console.log(pubkey)
   }
   const readUser=(pubkey)=>{
     console.log(pubkey)
   }
+
   return (
     <Link
     href={{pathname:'/',query:{name:`${el.name}`,address:`${el.pubkey}`}}}

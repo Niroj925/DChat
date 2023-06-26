@@ -23,7 +23,8 @@ function Chat() {
 
     const currentUserName=chatData.name;
     const currentUserAddress=chatData.address;
-
+    console.log('name',currentUserName);
+   console.log('address',currentUserAddress);
     console.log(friendMsg);
 
     const getUserName=async()=>{
@@ -46,7 +47,7 @@ function Chat() {
                 timestamp: message.timestamp._hex,
                 msg: message.msg,
               }));
-           
+               console.log('messages:', messages);
               dispatch(setFriendMsg(messages))
             
         }catch(err){
