@@ -4,9 +4,10 @@ import {  configureStore,combineReducers } from "@reduxjs/toolkit";
 import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST,persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./slicer/userSlicer";
-
+import activeReducer from "./slicer/activeSlicer";
 const rootReducer = combineReducers({
     state:userReducer,
+    index:activeReducer
   });
 
 

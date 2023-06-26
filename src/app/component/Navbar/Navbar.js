@@ -5,9 +5,13 @@ import Image from 'next/image';
 import styles from './Navbar.module.css';
 import Link from 'next/link';
 import {FaCross} from 'react-icons/fa'
-import {useDispatch, useSelector, } from 'react-redux';
+import {useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { setActive } from '../../features/slicer/activeSlicer';
 
 function Navbar() {
+
+  const dispatch=useDispatch();
 
   const contract=useSelector((state)=>state.state.contract);
   const account=useSelector((state)=>state.state.account);
@@ -15,10 +19,14 @@ function Navbar() {
     // console.log('account address:',account);
     const [userName,setUserName]=useState('');
     const [openModel,setOpenModel]=useState(false)
-    const [active,setActive]=useState(2);
+    // const [active,setActive]=useState(2);
     const[open,setOpen]=useState(false);
   
-   
+    // dispatch(setActive(active));
+
+    const activeIndex=useSelector((state)=>state.index.active);
+    console.log(activeIndex);
+
     const menuItems=[
         {
           menu:"All Users",
@@ -68,10 +76,13 @@ return (
        <div className={styles.NavBar_box_right_menu}>
       {menuItems.map((el,i)=>(
         <div
-        onClick={()=>setActive(i+1)}
+        onClick={()=>
+          // setActive(i+1)
+          dispatch(setActive(i+1))
+        }
         key={i+1}
         className={`${styles.NavBar_box_right_menu_items} ${
-          active==i+1?styles.active_btn:""
+          activeIndex==i+1?styles.active_btn:""
         }`}
         >
           <Link 
@@ -89,10 +100,13 @@ return (
          <div className={styles.mobile_menu}>
          {menuItems.map((el,i)=>(
            <div
-           onClick={()=>setActive(i+1)}
+           onClick={()=>
+            // setActive(i+1)
+            dispatch(setActive(i+1))
+          }
            key={i+1}
            className={`${styles.mobile_menu_items} ${
-             active==i+1?styles.active_btn:""
+             activeIndex==i+1?styles.active_btn:""
            }`}
            >
              <Link 

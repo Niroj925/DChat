@@ -11,16 +11,20 @@ function alluser() {
 
 const[userLists,setUserLists]=useState([]);
 
-// console.log(contract);
-const getFriends=async()=>{
-  const Friends=await contract.getAllAppUser();
-  // console.log('friends:',Friends);
-  setUserLists(Friends);
-}
+useEffect(() => {
+  const getFriends = async () => {
+    try {
+      const Friends=await contract.getAllAppUser();
+      // console.log('friends:',Friends);
+      setUserLists(Friends);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
-useEffect(()=>{
-contract&&getFriends();
-},[contract]);
+  getFriends();
+}, [contract]);
+
   return (
 
    

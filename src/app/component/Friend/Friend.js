@@ -10,17 +10,21 @@ function Friend() {
     const contract=useSelector((state)=>state.state.contract);
     const account=useSelector((state)=>state.state.account);
   
-    const getFriends=async()=>{
-    
-        const friends=await contract.getMyFriendList();
-        // console.log('friends:',friends)
-        setFriendList(friends);
-        
-    }
 
-useEffect(()=>{
-    contract&&getFriends();
-},[contract]);
+
+useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const friends = await contract.getMyFriendList();
+        setFriendList(friends);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
+    getFriends();
+  }, [contract]);
+  
 
   return (
     <div className={styles.Friend}>
