@@ -23,8 +23,6 @@ function Chat() {
 
     const currentUserName=chatData.name;
     const currentUserAddress=chatData.address;
-    console.log('name',currentUserName);
-   console.log('address',currentUserAddress);
     console.log(friendMsg);
 
     const getUserName=async()=>{
@@ -38,9 +36,10 @@ function Chat() {
    useEffect(()=>{
 
     const readMessage=async (friendAddress)=>{
+       console.log('address',friendAddress)
         try{
             const read=await contract.readMessage(friendAddress);
-            console.log(read);
+            console.log('msg',read);
           
             const messages = read.map((message) => ({
                 sender: message.sender,
