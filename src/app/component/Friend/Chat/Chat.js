@@ -3,28 +3,27 @@ import Image from 'next/image'
 import { useRouter,useSearchParams } from 'next/navigation'
 import styles from './Chat.module.css';
 import Avatar from '../../Avatar';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import {useSelector } from 'react-redux/es/hooks/useSelector';
+import { setChatData } from '@/app/features/slicer/chatSlicer';
+import { setFriendMsg } from '@/app/features/slicer/msgSlicer';
 
 function Chat() {
+    const dispatch=useDispatch();
+    const searchParams = useSearchParams();
     const [message,setMessage]=useState('');
-    const [chatData,setChatData]=useState({
-        name:"",
-        address:"",
-    });
-    const [loading,setLoading]=useState(false);
+
     const[userName,setUserName]=useState('');
-    const [currentUserName,setCurrentUserName]=useState('');
-    const [currentUserAddress,setCurrentUserAddress]=useState('');
-     const [friendMsg,setFriendMsg]=useState([]);
+  
      const contract=useSelector((state)=>state.state.contract);
-     const account=useSelector((state)=>state.state.account);
-   
-    
-    const readUser=async (userAddress)=>{
-        const userName=await contract.getUsername(userAddress);
-        setCurrentUserName(userName);
-        setCurrentUserAddress(userAddress);
-    }
+     const account=useSelector((state)=>state.state.account);    
+     const chatData=useSelector((state)=>state.user.chatData);
+    const friendMsg=useSelector((state)=>state.message.friendMsg);
+
+
+    const currentUserName=chatData.name;
+    const currentUserAddress=chatData.address;
+
 
     const getUserName=async()=>{
         if(contract){
@@ -38,30 +37,29 @@ function Chat() {
             if(currentUserAddress){
             const read=await contract.readMessage(friendAddress);
             console.log(read);
-            // setFriendMsg(read);
+          
             const messages = read.map((message) => ({
                 sender: message.sender,
                 timestamp: message.timestamp._hex,
                 msg: message.msg,
               }));
-              setFriendMsg(messages);
+           
+              dispatch(setFriendMsg(messages))
             }
         }catch(err){
             console.log(err);
-            // setError("currently you have no Message");
+            
         }
     }
 
 
-       const searchParams = useSearchParams();
     useEffect(()=>{
         const name = searchParams.get('name');
        const address = searchParams.get('address');
-    //    setCurrentUserName(name);
-    //    setCurrentUserAddress(address);
+  
        setChatData({name,address});
-       chatData.address && readUser(address);
-        //  currentUserAddress &&  readMessage(account);
+       dispatch(setChatData({name,address}));
+
        account &&  getUserName();
     },[searchParams]);
 
@@ -69,7 +67,6 @@ function Chat() {
        currentUserAddress && readMessage(currentUserAddress);
     },[currentUserAddress]);
 
-    // console.log(chatData.address,chatData.name);
           console.log(friendMsg);
 
           const sendMessage =async(friend_key,_msg)=>{
@@ -109,10 +106,7 @@ function Chat() {
                 <div className={styles.Chat_box_left}>
                    {friendMsg&&friendMsg.map((el,i)=>(
                     <div key={i}>
-                        {/* {<p>{el.sender}</p>}
-                        {<p>{account}</p>}
-                        {el.sender.toLowerCase()==account.toLowerCase()?<p>equal</p>:<p>Not equal</p>} */}
-                        {el.sender.toLowerCase()==account.toLowerCase()?(
+                         {el.sender.toLowerCase()==account.toLowerCase()?(
                             <div className={styles.Chat_box_left_title}>
                                 <Image src='/image/spider.png'
                                   alt='img'

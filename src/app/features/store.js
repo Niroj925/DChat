@@ -5,9 +5,14 @@ import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST,persistReducer } from "r
 import storage from "redux-persist/lib/storage";
 import userReducer from "./slicer/userSlicer";
 import activeReducer from "./slicer/activeSlicer";
+import chatReducer from './slicer/chatSlicer';
+import msgReducer from './slicer/msgSlicer';
+
 const rootReducer = combineReducers({
     state:userReducer,
-    index:activeReducer
+    index:activeReducer,
+    user:chatReducer,
+    message:msgReducer
   });
 
 

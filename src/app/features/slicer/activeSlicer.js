@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState={
-  active:1,
+  active:2,
 }
 
 export const activeSlice=createSlice({
