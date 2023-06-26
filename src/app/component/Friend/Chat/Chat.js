@@ -24,6 +24,7 @@ function Chat() {
     const currentUserName=chatData.name;
     const currentUserAddress=chatData.address;
 
+    console.log(friendMsg);
 
     const getUserName=async()=>{
         if(contract){
@@ -32,9 +33,11 @@ function Chat() {
         }
     }
 
+
+   useEffect(()=>{
+
     const readMessage=async (friendAddress)=>{
         try{
-            if(currentUserAddress){
             const read=await contract.readMessage(friendAddress);
             console.log(read);
           
@@ -45,12 +48,16 @@ function Chat() {
               }));
            
               dispatch(setFriendMsg(messages))
-            }
+            
         }catch(err){
             console.log(err);
             
         }
-    }
+    };
+
+   readMessage(currentUserAddress);
+
+   },[currentUserAddress])
 
 
     useEffect(()=>{
@@ -63,11 +70,11 @@ function Chat() {
        account &&  getUserName();
     },[searchParams]);
 
-    useEffect(()=>{
-       currentUserAddress && readMessage(currentUserAddress);
-    },[currentUserAddress]);
+    // useEffect(()=>{
+    //    currentUserAddress && readMessage(currentUserAddress);
+    // },[currentUserAddress]);
 
-          console.log(friendMsg);
+        
 
           const sendMessage =async(friend_key,_msg)=>{
             const transaction=await contract.sendMessage(friend_key,_msg);
